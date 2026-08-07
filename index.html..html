@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu Nome — Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1a1b26;
+    --surface: #20222e;
+    --surface-2: #262837;
+    --border: #33354a;
+    --text: #c0caf5;
+    --muted: #6b7394;
+    --purple: #bb9af7;
+    --green: #9ece6a;
+    --orange: #e0af68;
+    --pink: #f7768e;
+    --cyan: #7dcfff;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    padding-bottom: 4rem;
+  }
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--purple); color: var(--bg); }
+  :focus-visible{ outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  /* Editor tab bar */
+  .tabbar{
+    position: sticky; top:0; z-index: 10;
+    display:flex; align-items:center;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x:auto;
+  }
+  .tabbar .dots{ display:flex; gap:6px; padding: 0 14px; flex-shrink:0; }
+  .dots span{ width:10px; height:10px; border-radius:50%; }
+  .dots span:nth-child(1){ background:#f7768e; }
+  .dots span:nth-child(2){ background:#e0af68; }
+  .dots span:nth-child(3){ background:#9ece6a; }
+  .tab{
+    font-family: var(--mono); font-size: 0.8rem;
+    padding: 12px 18px; color: var(--muted);
+    border-right: 1px solid var(--border);
+    white-space: nowrap; transition: color .15s, background .15s;
+  }
+  .tab:hover, .tab:focus-visible{ color: var(--text); background: var(--surface-2); }
+  .tab.active{ color: var(--orange); background: var(--bg); }
+
+  section{ max-width: 880px; margin: 0 auto; padding: 4.5rem 1.5rem 1rem; }
+
+  /* Hero with line-number gutter */
+  .hero{ display:flex; gap: 1.5rem; padding-top: 3.5rem; }
+  .gutter{
+    font-family: var(--mono); color: #3b3d54; font-size: 0.85rem;
+    text-align:right; user-select:none; padding-top: 4px; line-height: 1.9;
+    flex-shrink:0;
+  }
+  .code{ font-family: var(--mono); font-size: 0.95rem; line-height: 1.9; }
+  .kw{ color: var(--purple); } .str{ color: var(--green); }
+  .prop{ color: var(--cyan); } .cmt{ color: var(--muted); }
+  .fn{ color: var(--orange); }
+  .hero h1{
+    font-family: var(--mono); font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin: 1.6rem 0 0.8rem; color: var(--text);
+  }
+  .hero h1 .accent{ color: var(--orange); }
+  .hero p.lede{ color: var(--muted); font-size: 1.05rem; max-width: 60ch; margin-top: .4rem; }
+  .cta-row{ display:flex; gap: .8rem; margin-top: 1.8rem; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--mono); font-size: .85rem; padding: .7rem 1.2rem;
+    border-radius: 6px; border: 1px solid var(--border); transition: all .15s;
+  }
+  .btn.primary{ background: var(--purple); color: var(--bg); border-color: var(--purple); font-weight:600; }
+  .btn.primary:hover{ background: #a889f5; }
+  .btn.ghost:hover{ border-color: var(--cyan); color: var(--cyan); }
+
+  /* Section headers styled as comments */
+  .section-head{ font-family: var(--mono); color: var(--muted); font-size: .85rem; margin-bottom: 1.4rem; }
+  .section-head .path{ color: var(--orange); }
+  h2.title{ font-family: var(--mono); font-size: 1.5rem; color: var(--text); margin-bottom: 1.2rem; }
+  h2.title .num{ color: var(--muted); font-weight: 400; margin-right: .5rem; }
+
+  /* About */
+  .about-box{
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.6rem; font-size: .98rem; color: var(--text);
+  }
+  .about-box p + p{ margin-top: .8rem; }
+  .tags{ display:flex; flex-wrap:wrap; gap: .5rem; margin-top: 1.2rem; }
+  .tag{
+    font-family: var(--mono); font-size: .78rem; padding: .3rem .7rem;
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; color: var(--cyan);
+  }
+
+  /* Projects */
+  .projects-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 1.1rem; }
+  .card{
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.4rem; display:flex; flex-direction:column; gap: .7rem;
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover{ border-color: var(--purple); transform: translateY(-2px); }
+  .card .fname{ font-family: var(--mono); font-size: .8rem; color: var(--orange); }
+  .card h3{ font-family: var(--mono); font-size: 1.05rem; color: var(--text); }
+  .card p{ color: var(--muted); font-size: .9rem; flex-grow:1; }
+  .card .tech{ display:flex; gap:.4rem; flex-wrap:wrap; }
+  .card .tech span{ font-size: .72rem; font-family: var(--mono); color: var(--green); }
+  .card .links{ display:flex; gap: 1rem; margin-top: .3rem; }
+  .card .links a{ font-family: var(--mono); font-size: .8rem; color: var(--cyan); border-bottom: 1px solid transparent; }
+  .card .links a:hover{ border-color: var(--cyan); }
+
+  /* Skills as imports */
+  .imports{
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.4rem; font-family: var(--mono); font-size: .88rem;
+  }
+  .imports div{ padding: .25rem 0; color: var(--text); }
+  .imports .from{ color: var(--purple); } .imports .mod{ color: var(--green); }
+
+  /* Contact terminal */
+  .terminal{
+    background: #12131c; border: 1px solid var(--border); border-radius: 8px;
+    padding: 1.4rem; font-family: var(--mono); font-size: .9rem;
+  }
+  .terminal .line{ margin-bottom: .5rem; }
+  .terminal .prompt{ color: var(--green); margin-right: .5rem; }
+  .terminal a{ color: var(--cyan); }
+  .terminal a:hover{ text-decoration: underline; }
+
+  footer{
+    text-align:center; color: var(--muted); font-family: var(--mono);
+    font-size: .78rem; margin-top: 3rem;
+  }
+
+  @media (max-width: 560px){
+    .hero{ gap: .8rem; }
+    .gutter{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .card{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="tabbar">
+  <div class="dots"><span></span><span></span><span></span></div>
+  <a class="tab active" href="#inicio">portfolio.html</a>
+  <a class="tab" href="#sobre">sobre.md</a>
+  <a class="tab" href="#projetos">projetos/</a>
+  <a class="tab" href="#skills">skills.json</a>
+  <a class="tab" href="#contato">contato.txt</a>
+</nav>
+
+<section id="inicio" class="hero">
+  <div class="gutter">1<br>2<br>3<br>4<br>5<br>6</div>
+  <div>
+    <div class="code">
+      <span class="kw">const</span> dev = {<br>
+      &nbsp;&nbsp;<span class="prop">nome</span>: <span class="str">"Seu Nome Aqui"</span>,<br>
+      &nbsp;&nbsp;<span class="prop">curso</span>: <span class="str">"Análise e Desenvolvimento de Sistemas"</span>,<br>
+      &nbsp;&nbsp;<span class="prop">semestre</span>: <span class="str">"1º"</span>,<br>
+      &nbsp;&nbsp;<span class="prop">status</span>: <span class="str">"aprendendo todo dia"</span>,<br>
+      };
+    </div>
+    <h1>Construindo minha jornada em <span class="accent">tecnologia</span>.</h1>
+    <p class="lede">Estudante de ADS no início da carreira, buscando a primeira oportunidade na área. Aqui estão alguns projetos que venho desenvolvendo enquanto aprendo.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#projetos">Ver projetos</a>
+      <a class="btn ghost" href="#contato">Entrar em contato</a>
+    </div>
+  </div>
+</section>
+
+<section id="sobre">
+  <div class="section-head">// <span class="path">sobre.md</span></div>
+  <h2 class="title"><span class="num">01.</span>Sobre mim</h2>
+  <div class="about-box">
+    <p>Substitua este parágrafo por um resumo curto sobre você: de onde veio, por que escolheu ADS e o que te motiva na área. Duas ou três frases já bastam.</p>
+    <p>Fale também sobre como você aprende — cursos extras, projetos pessoais, comunidades que participa — mesmo sem experiência profissional isso mostra iniciativa.</p>
+    <div class="tags">
+      <span class="tag">Lógica de Programação</span>
+      <span class="tag">HTML/CSS</span>
+      <span class="tag">Git & GitHub</span>
+      <span class="tag">Adicione mais aqui</span>
+    </div>
+  </div>
+</section>
+
+<section id="projetos">
+  <div class="section-head">// <span class="path">projetos/</span></div>
+  <h2 class="title"><span class="num">02.</span>Projetos</h2>
+  <div class="projects-grid">
+
+    <div class="card">
+      <div class="fname">calculadora.py</div>
+      <h3>Nome do Projeto 1</h3>
+      <p>Descreva o que o projeto faz, o problema que resolve e o que você aprendeu construindo ele.</p>
+      <div class="tech"><span>Python</span><span>Lógica</span></div>
+      <div class="links">
+        <a href="#" target="_blank" rel="noopener">GitHub →</a>
+        <a href="#" target="_blank" rel="noopener">Demo →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="fname">todo-list.html</div>
+      <h3>Nome do Projeto 2</h3>
+      <p>Descreva o que o projeto faz, o problema que resolve e o que você aprendeu construindo ele.</p>
+      <div class="tech"><span>HTML</span><span>CSS</span><span>JS</span></div>
+      <div class="links">
+        <a href="#" target="_blank" rel="noopener">GitHub →</a>
+        <a href="#" target="_blank" rel="noopener">Demo →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="fname">jogo-da-velha.js</div>
+      <h3>Nome do Projeto 3</h3>
+      <p>Descreva o que o projeto faz, o problema que resolve e o que você aprendeu construindo ele.</p>
+      <div class="tech"><span>JavaScript</span></div>
+      <div class="links">
+        <a href="#" target="_blank" rel="noopener">GitHub →</a>
+        <a href="#" target="_blank" rel="noopener">Demo →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-head">// <span class="path">skills.json</span></div>
+  <h2 class="title"><span class="num">03.</span>Skills</h2>
+  <div class="imports">
+    <div><span class="from">import</span> { Python, Java } <span class="from">from</span> <span class="mod">"linguagens"</span>;</div>
+    <div><span class="from">import</span> { Git, GitHub } <span class="from">from</span> <span class="mod">"ferramentas"</span>;</div>
+    <div><span class="from">import</span> { HTML, CSS } <span class="from">from</span> <span class="mod">"web"</span>;</div>
+    <div><span class="from">import</span> { LogicaDeProgramacao, ResolucaoDeProblemas } <span class="from">from</span> <span class="mod">"fundamentos"</span>;</div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="section-head">// <span class="path">contato.txt</span></div>
+  <h2 class="title"><span class="num">04.</span>Contato</h2>
+  <div class="terminal">
+    <div class="line"><span class="prompt">$</span>email <a href="mailto:seuemail@exemplo.com">seuemail@exemplo.com</a></div>
+    <div class="line"><span class="prompt">$</span>github <a href="#" target="_blank" rel="noopener">github.com/seu-usuario</a></div>
+    <div class="line"><span class="prompt">$</span>linkedin <a href="#" target="_blank" rel="noopener">linkedin.com/in/seu-usuario</a></div>
+  </div>
+</section>
+
+<footer>feito com café e algumas linhas de código — 2026</footer>
+
+</body>
+</html>
